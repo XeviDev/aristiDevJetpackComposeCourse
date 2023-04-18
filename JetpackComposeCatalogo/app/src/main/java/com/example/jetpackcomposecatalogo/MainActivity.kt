@@ -47,6 +47,7 @@ fun MyComplexLayout() {
         ) {
             Text(text = "Hola soy Azul")
         }
+        MySpacer(size = 30)
         Row(
             Modifier
                 .fillMaxWidth()
@@ -71,6 +72,7 @@ fun MyComplexLayout() {
                 Text(text = "Hola soy Verde")
             }
         }
+        MySpacer(size = 40)
         Box(
             Modifier
                 .fillMaxWidth()
@@ -81,6 +83,11 @@ fun MyComplexLayout() {
             Text(text = "Hola soy Magenta")
         }
     }
+}
+
+@Composable
+fun MySpacer(size:Int){
+    Spacer(modifier = Modifier.height(size.dp))
 }
 
 @Composable
