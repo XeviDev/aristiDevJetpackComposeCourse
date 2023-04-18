@@ -28,9 +28,57 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
                 ) {
-                    MyRow()
+                    MyComplexLayout()
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun MyComplexLayout() {
+    Column(Modifier.fillMaxSize()) {
+        Box(
+            Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .background(Color.Cyan),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(text = "Hola soy Azul")
+        }
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .weight(1f)
+        ) {
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+                    .background(Color.Yellow),
+                contentAlignment = Alignment.Center
+            ){
+                Text(text = "Hola soy Amarillo")
+            }
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+                    .background(Color.Green),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(text = "Hola soy Verde")
+            }
+        }
+        Box(
+            Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .background(Color.Magenta),
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            Text(text = "Hola soy Magenta")
         }
     }
 }
@@ -112,6 +160,6 @@ fun MyBox() {
 @Composable
 fun DefaultPreview() {
     JetpackComposeCatalogoTheme {
-        MyRow()
+        MyComplexLayout()
     }
 }
