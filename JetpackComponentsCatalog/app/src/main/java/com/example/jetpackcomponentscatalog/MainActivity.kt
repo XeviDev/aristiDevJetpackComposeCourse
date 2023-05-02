@@ -68,17 +68,27 @@ fun MyButtonExample() {
             .padding(24.dp)
     ) {
         Button(
-            onClick = { enabled = false },
-            enabled = enabled,
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = Color.Magenta,
-                contentColor = Color.Blue
-            ),
-            border = BorderStroke(5.dp, Color.Green)
+            onClick = { enabled = false }, enabled = enabled, colors = ButtonDefaults.buttonColors(
+                backgroundColor = Color.Magenta, contentColor = Color.Blue
+            ), border = BorderStroke(5.dp, Color.Green)
         ) {
 
-            Text(text = "Patata")
+            Text(text = "Hola")
 
+        }
+
+        OutlinedButton(
+            onClick = { enabled = false },
+            enabled = enabled,
+            modifier = Modifier.padding(top = 8.dp),
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = Color.Magenta,
+                contentColor = Color.Blue,
+                disabledBackgroundColor = Color.Blue,
+                disabledContentColor = Color.Red
+            )
+        ) {
+            Text(text = "Hola")
         }
     }
 }
@@ -94,8 +104,7 @@ fun MyTextFieldOutlined() {
         modifier = Modifier.padding(24.dp),
         label = { Text(text = "Holita") },
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = Color.Magenta,
-            unfocusedBorderColor = Color.Blue
+            focusedBorderColor = Color.Magenta, unfocusedBorderColor = Color.Blue
         )
     )
 }
@@ -106,17 +115,13 @@ fun MyTextFieldAdvance() {
         mutableStateOf("")
     }
 
-    TextField(
-        value = myText,
-        onValueChange = {
-            myText =
-                if (it.contains("a")) {
-                    it.replace("a", "")
-                } else {
-                    it
-                }
-        },
-        label = { Text(text = "Introduce tu nombre") })
+    TextField(value = myText, onValueChange = {
+        myText = if (it.contains("a")) {
+            it.replace("a", "")
+        } else {
+            it
+        }
+    }, label = { Text(text = "Introduce tu nombre") })
 }
 
 @Composable
@@ -138,15 +143,13 @@ fun MyText() {
             style = TextStyle(textDecoration = TextDecoration.Underline)
         )
         Text(
-            text = "Esto es un ejemplo",
-            textDecoration = TextDecoration.combine(
+            text = "Esto es un ejemplo", textDecoration = TextDecoration.combine(
                 listOf(TextDecoration.Underline, TextDecoration.LineThrough)
 
             )
         )
         Text(
-            text = "Esto es un ejemplo",
-            fontSize = 30.sp
+            text = "Esto es un ejemplo", fontSize = 30.sp
         )
     }
 
