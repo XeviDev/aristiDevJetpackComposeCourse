@@ -90,6 +90,10 @@ fun MyButtonExample() {
         ) {
             Text(text = "Hola")
         }
+
+        TextButton(onClick = { /*TODO*/ }) {
+            Text(text = "Hola")
+        }
     }
 }
 
