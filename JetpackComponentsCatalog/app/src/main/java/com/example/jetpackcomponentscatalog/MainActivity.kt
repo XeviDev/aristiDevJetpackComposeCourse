@@ -7,10 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -52,7 +49,7 @@ class MainActivity : ComponentActivity() {
 //                        MyImage(myText) { myText = it }
 //
 //                    }
-                    MyProgress()
+                    MyProgressAdvance()
                 }
             }
         }
@@ -63,12 +60,37 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     JetpackComponentsCatalogTheme {
-        MyProgress()
+        MyProgressAdvance()
+    }
+}
+
+@Composable
+fun MyProgressAdvance() {
+    var controlBar by rememberSaveable() {
+        mutableStateOf(0f)
+    }
+    Column(
+        Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        LinearProgressIndicator(progress = controlBar)
+        Row(Modifier.fillMaxWidth()) {
+            Button(onClick = {controlBar += 0.1f }) {
+                Text(text = "Incrementar")
+            }
+            Button(onClick = { controlBar -= 0.1f }) {
+                Text(text = "Reducir")
+            }
+        }
     }
 }
 
 @Composable
 fun MyProgress() {
+    var showLoading by rememberSaveable() {
+        mutableStateOf(false)
+    }
     Column(
         Modifier
             .padding(24.dp)
@@ -76,13 +98,20 @@ fun MyProgress() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        CircularProgressIndicator(color = Color.Red, strokeWidth = 10.dp)
-        LinearProgressIndicator(
-            modifier = Modifier.padding(top = 32.dp),
-            color = Color.Red,
-            backgroundColor = Color.Blue
-        )
+        if (showLoading) {
+            CircularProgressIndicator(color = Color.Red, strokeWidth = 10.dp)
+            LinearProgressIndicator(
+                modifier = Modifier.padding(top = 32.dp),
+                color = Color.Red,
+                backgroundColor = Color.Blue
+            )
+        }
+        Button(onClick = { showLoading = !showLoading }) {
+            Text(text = "Cargar perfil")
+        }
     }
+
+
 }
 
 @Composable
