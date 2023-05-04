@@ -49,7 +49,7 @@ class MainActivity : ComponentActivity() {
 //                        MyImage(myText) { myText = it }
 //
 //                    }
-                    MyProgressAdvance()
+                    MySwitch()
                 }
             }
         }
@@ -60,10 +60,29 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     JetpackComponentsCatalogTheme {
-        MyProgressAdvance()
+        MySwitch()
     }
 }
-
+@Composable
+fun MySwitch(){
+    var state by rememberSaveable() {
+        mutableStateOf(true)
+    }
+    Switch(checked = state, onCheckedChange = {
+        state = !state
+    }, enabled = true, colors = SwitchDefaults.colors(
+        uncheckedThumbColor = Color.Red,
+        uncheckedTrackColor = Color.Magenta,
+        uncheckedTrackAlpha = 0.1f,
+        checkedThumbColor = Color.Green,
+        checkedTrackColor = Color.Cyan,
+        checkedTrackAlpha = 0.1f,
+        disabledCheckedTrackColor = Color.Yellow,
+        disabledCheckedThumbColor = Color.Yellow,
+        disabledUncheckedThumbColor = Color.Yellow,
+        disabledUncheckedTrackColor = Color.Yellow
+    ))
+}
 @Composable
 fun MyProgressAdvance() {
     var controlBar by rememberSaveable() {
@@ -85,6 +104,8 @@ fun MyProgressAdvance() {
         }
     }
 }
+
+
 
 @Composable
 fun MyProgress() {
