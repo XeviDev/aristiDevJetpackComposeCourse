@@ -49,7 +49,11 @@ class MainActivity : ComponentActivity() {
 //                        MyImage(myText) { myText = it }
 //
 //                    }
-                    MyCheckbox()
+                    Column() {
+                        MyCheckboxWithText()
+                        MyCheckboxWithText()
+                    }
+
                 }
             }
         }
@@ -60,7 +64,20 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     JetpackComponentsCatalogTheme {
-        MyCheckbox()
+        MyCheckboxWithText()
+    }
+}
+
+@Composable
+fun MyCheckboxWithText(){
+    var state by rememberSaveable() {
+        mutableStateOf(true)
+    }
+    Row(Modifier.padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
+
+        Checkbox(checked = state, onCheckedChange = {state = !state})
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(text = "Hola")
     }
 }
 
