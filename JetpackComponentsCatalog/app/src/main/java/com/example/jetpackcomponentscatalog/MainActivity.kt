@@ -49,7 +49,7 @@ class MainActivity : ComponentActivity() {
 //                        MyImage(myText) { myText = it }
 //
 //                    }
-                    MySwitch()
+                    MyCheckbox()
                 }
             }
         }
@@ -60,29 +60,50 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     JetpackComponentsCatalogTheme {
-        MySwitch()
+        MyCheckbox()
     }
 }
+
 @Composable
-fun MySwitch(){
+fun MyCheckbox() {
     var state by rememberSaveable() {
         mutableStateOf(true)
     }
-    Switch(checked = state, onCheckedChange = {
-        state = !state
-    }, enabled = true, colors = SwitchDefaults.colors(
-        uncheckedThumbColor = Color.Red,
-        uncheckedTrackColor = Color.Magenta,
-        uncheckedTrackAlpha = 0.1f,
-        checkedThumbColor = Color.Green,
-        checkedTrackColor = Color.Cyan,
-        checkedTrackAlpha = 0.1f,
-        disabledCheckedTrackColor = Color.Yellow,
-        disabledCheckedThumbColor = Color.Yellow,
-        disabledUncheckedThumbColor = Color.Yellow,
-        disabledUncheckedTrackColor = Color.Yellow
-    ))
+    Checkbox(
+        checked = state,
+        onCheckedChange = { state = !state },
+        enabled = true,
+        colors = CheckboxDefaults.colors(
+            checkedColor = Color.Red,
+            uncheckedColor = Color.Blue,
+            checkmarkColor = Color.Green
+        )
+    )
 }
+
+@Composable
+fun MySwitch() {
+    var state by rememberSaveable() {
+        mutableStateOf(true)
+    }
+    Switch(
+        checked = state, onCheckedChange = {
+            state = !state
+        }, enabled = true, colors = SwitchDefaults.colors(
+            uncheckedThumbColor = Color.Red,
+            uncheckedTrackColor = Color.Magenta,
+            uncheckedTrackAlpha = 0.1f,
+            checkedThumbColor = Color.Green,
+            checkedTrackColor = Color.Cyan,
+            checkedTrackAlpha = 0.1f,
+            disabledCheckedTrackColor = Color.Yellow,
+            disabledCheckedThumbColor = Color.Yellow,
+            disabledUncheckedThumbColor = Color.Yellow,
+            disabledUncheckedTrackColor = Color.Yellow
+        )
+    )
+}
+
 @Composable
 fun MyProgressAdvance() {
     var controlBar by rememberSaveable() {
@@ -95,7 +116,7 @@ fun MyProgressAdvance() {
     ) {
         LinearProgressIndicator(progress = controlBar)
         Row(Modifier.fillMaxWidth()) {
-            Button(onClick = {controlBar += 0.1f }) {
+            Button(onClick = { controlBar += 0.1f }) {
                 Text(text = "Incrementar")
             }
             Button(onClick = { controlBar -= 0.1f }) {
@@ -104,7 +125,6 @@ fun MyProgressAdvance() {
         }
     }
 }
-
 
 
 @Composable
