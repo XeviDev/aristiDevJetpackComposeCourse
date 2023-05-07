@@ -31,6 +31,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.jetpackcomponentscatalog.ui.CheckInfo
 import com.example.jetpackcomponentscatalog.ui.theme.JetpackComponentsCatalogTheme
 
 class MainActivity : ComponentActivity() {
@@ -42,22 +43,36 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
                 ) {
-                    var myText by remember {
-                        mutableStateOf("Xevi")
-                    }
-//                    Column() {
-//                        MyImage(myText) { myText = it }
-//
-//                    }
+                    val myOptions = getOptions(listOf("Xevi", "Ejemplo", "Typhlosion"))
+
                     Column() {
-                        MyCheckboxWithText()
-                        MyCheckboxWithText()
+                        myOptions.forEach {
+                            MyCheckboxWithTextCompleted(it)
+                        }
+
+
                     }
 
                 }
             }
         }
     }
+}
+
+@Composable
+fun getOptions(titles: List<String>): List<CheckInfo> {
+    return titles.map {
+        var status by rememberSaveable {
+            mutableStateOf(false)
+        }
+        CheckInfo(
+            title = it,
+            selected = status,
+            onCheckedChange = { myNewStatus -> status = myNewStatus }
+        )
+    }
+
+
 }
 
 @Preview(showBackground = true)
@@ -69,13 +84,25 @@ fun DefaultPreview() {
 }
 
 @Composable
-fun MyCheckboxWithText(){
+fun MyCheckboxWithTextCompleted(checkInfo: CheckInfo) {
+    Row(Modifier.padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
+
+        Checkbox(
+            checked = checkInfo.selected,
+            onCheckedChange = { checkInfo.onCheckedChange(!checkInfo.selected) })
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(text = checkInfo.title)
+    }
+}
+
+@Composable
+fun MyCheckboxWithText() {
     var state by rememberSaveable() {
         mutableStateOf(true)
     }
     Row(Modifier.padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
 
-        Checkbox(checked = state, onCheckedChange = {state = !state})
+        Checkbox(checked = state, onCheckedChange = { state = !state })
         Spacer(modifier = Modifier.width(8.dp))
         Text(text = "Hola")
     }
