@@ -28,6 +28,7 @@ import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -40,12 +41,16 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             JetpackComponentsCatalogTheme {
+                var selected by remember {
+                    mutableStateOf("Xevi")
+                }
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
                 ) {
+
                     Column {
-                        MyRadioButton()
+                        MyRadioButtonList(selected) { selected = it }
                     }
                 }
             }
@@ -72,6 +77,38 @@ fun MyRadioButton() {
             )
         )
         Text(text = "Ejemplo 1")
+    }
+}
+
+@Composable
+fun MyRadioButtonList(selected:String, onItemSelected:(String) -> Unit) {
+
+    Column(Modifier.fillMaxWidth()) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            RadioButton(
+                selected = selected == "Xevi", onClick = { onItemSelected("Xevi")})
+            Text(text = "Xevi")
+        }
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            RadioButton(
+                selected = selected == "Juan", onClick = {onItemSelected("Juan") }
+            )
+            Text(text = "Juan")
+        }
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            RadioButton(
+                selected = selected == "Koke", onClick = { onItemSelected("Koke")}
+            )
+            Text(text = "Koke")
+        }
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            RadioButton(
+                selected = selected == "Carlos", onClick = { onItemSelected("Carlos")}
+            )
+            Text(text = "Carlos")
+        }
+
+
     }
 }
 
