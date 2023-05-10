@@ -44,20 +44,34 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
                 ) {
-                    val myOptions = getOptions(listOf("Xevi", "Ejemplo", "Typhlosion"))
-
-                    Column() {
-                        MyTriStatusCheckbox()
-                        myOptions.forEach {
-                            MyCheckboxWithTextCompleted(it)
-                        }
-
-
+                    Column {
+                        MyRadioButton()
                     }
-
                 }
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview() {
+    JetpackComponentsCatalogTheme {
+        MyRadioButton()
+    }
+}
+
+@Composable
+fun MyRadioButton() {
+    Row(Modifier.fillMaxWidth()) {
+        RadioButton(
+            selected = true, onClick = { }, enabled = false, colors = RadioButtonDefaults.colors(
+                selectedColor = Color.Red,
+                unselectedColor = Color.Yellow,
+                disabledColor = Color.Green
+            )
+        )
+        Text(text = "Ejemplo 1")
     }
 }
 
@@ -93,13 +107,6 @@ fun getOptions(titles: List<String>): List<CheckInfo> {
 
 }
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    JetpackComponentsCatalogTheme {
-        MyCheckboxWithText()
-    }
-}
 
 @Composable
 fun MyCheckboxWithTextCompleted(checkInfo: CheckInfo) {
