@@ -48,9 +48,8 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
                 ) {
-
-                    Column {
-                        MyRadioButtonList(selected) { selected = it }
+                    Column() {
+                        MyCard()
                     }
                 }
             }
@@ -62,7 +61,28 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     JetpackComponentsCatalogTheme {
-        MyRadioButton()
+        MyCard()
+    }
+}
+
+
+@Composable
+fun MyCard() {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        elevation = 12.dp,
+        shape = MaterialTheme.shapes.small,
+        backgroundColor = Color.Red,
+        contentColor = Color.Green,
+        border = BorderStroke(5.dp, Color.Green)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(text = "Ejemplo 1")
+            Text(text = "Ejemplo 2")
+            Text(text = "Ejemplo 3")
+        }
     }
 }
 
@@ -81,29 +101,29 @@ fun MyRadioButton() {
 }
 
 @Composable
-fun MyRadioButtonList(selected:String, onItemSelected:(String) -> Unit) {
+fun MyRadioButtonList(selected: String, onItemSelected: (String) -> Unit) {
 
     Column(Modifier.fillMaxWidth()) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             RadioButton(
-                selected = selected == "Xevi", onClick = { onItemSelected("Xevi")})
+                selected = selected == "Xevi", onClick = { onItemSelected("Xevi") })
             Text(text = "Xevi")
         }
         Row(verticalAlignment = Alignment.CenterVertically) {
             RadioButton(
-                selected = selected == "Juan", onClick = {onItemSelected("Juan") }
+                selected = selected == "Juan", onClick = { onItemSelected("Juan") }
             )
             Text(text = "Juan")
         }
         Row(verticalAlignment = Alignment.CenterVertically) {
             RadioButton(
-                selected = selected == "Koke", onClick = { onItemSelected("Koke")}
+                selected = selected == "Koke", onClick = { onItemSelected("Koke") }
             )
             Text(text = "Koke")
         }
         Row(verticalAlignment = Alignment.CenterVertically) {
             RadioButton(
-                selected = selected == "Carlos", onClick = { onItemSelected("Carlos")}
+                selected = selected == "Carlos", onClick = { onItemSelected("Carlos") }
             )
             Text(text = "Carlos")
         }
