@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -49,7 +50,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
                 ) {
                     Column() {
-                        MyCard()
+                        MyBadgeBox()
                     }
                 }
             }
@@ -61,10 +62,22 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     JetpackComponentsCatalogTheme {
-        MyCard()
+        MyBadgeBox()
     }
 }
 
+@Composable
+fun MyBadgeBox() {
+    BadgedBox(badge = {
+        Badge(
+            content = { Text("100") },
+            backgroundColor = Color.Blue,
+            contentColor = Color.Green
+        )
+    }, Modifier.padding(16.dp)) {
+        Icon(imageVector = Icons.Default.Star, contentDescription = "")
+    }
+}
 
 @Composable
 fun MyCard() {
