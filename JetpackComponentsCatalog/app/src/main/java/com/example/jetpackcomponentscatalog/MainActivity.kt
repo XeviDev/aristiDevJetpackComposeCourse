@@ -50,7 +50,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
                 ) {
                     Column() {
-                        MyBadgeBox()
+                        MyDivider()
                     }
                 }
             }
@@ -62,8 +62,13 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     JetpackComponentsCatalogTheme {
-        MyBadgeBox()
+        MyDivider()
     }
+}
+
+@Composable
+fun MyDivider(){
+    Divider(Modifier.fillMaxWidth().padding(16.dp), Color.Green)
 }
 
 @Composable
