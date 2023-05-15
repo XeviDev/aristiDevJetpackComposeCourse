@@ -51,7 +51,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
                 ) {
                     Column() {
-                        MyDropDownMenu()
+                        BasicSlider()
                     }
                 }
             }
@@ -63,7 +63,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     JetpackComponentsCatalogTheme {
-        MyDropDownMenu()
+        BasicSlider()
     }
 }
 
