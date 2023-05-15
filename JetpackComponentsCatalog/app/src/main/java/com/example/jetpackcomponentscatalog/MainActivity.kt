@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -50,7 +51,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
                 ) {
                     Column() {
-                        MyDivider()
+                        MyDropDownMenu()
                     }
                 }
             }
@@ -62,13 +63,54 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     JetpackComponentsCatalogTheme {
-        MyDivider()
+        MyDropDownMenu()
     }
 }
 
 @Composable
-fun MyDivider(){
-    Divider(Modifier.fillMaxWidth().padding(16.dp), Color.Green)
+fun MyDivider() {
+    Divider(
+        Modifier
+            .fillMaxWidth()
+            .padding(16.dp), Color.Green
+    )
+}
+
+@Composable
+fun MyDropDownMenu() {
+
+    var expanded by remember {
+        mutableStateOf(false)
+    }
+    val desserts = listOf("Helado", "Café", "Té", "Mochis", "Herbero")
+    var selectedText by remember {
+        mutableStateOf(desserts[0])
+    }
+    Column(Modifier.padding(20.dp)) {
+        OutlinedTextField(
+            value = selectedText,
+            onValueChange = { selectedText = it },
+            enabled = false,
+            readOnly = true,
+            modifier = Modifier
+                .clickable { expanded = true }
+                .fillMaxWidth()
+        )
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            desserts.forEach { dessert ->
+                DropdownMenuItem(onClick = {
+                    expanded = false
+                    selectedText = dessert
+                }) {
+                    Text(text = dessert)
+                }
+            }
+        }
+    }
 }
 
 @Composable
