@@ -51,7 +51,15 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
                 ) {
                     Column() {
-                        AdvanceSlider()
+                        var show by remember {
+                            mutableStateOf(false)
+                        }
+                        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
+                        Button(onClick = { show = true }) {
+                            Text(text = "Mostrar diálogo")
+                        }    
+                        MyDialog(show = show, onDissmiss = {show = false}, onConfirm = {Log.i("Xevi", "Click")})
+                        }
                     }
                 }
             }
@@ -63,7 +71,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     JetpackComponentsCatalogTheme {
-        AdvanceSlider()
     }
 }
 
