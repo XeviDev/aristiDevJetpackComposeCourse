@@ -54,11 +54,11 @@ class MainActivity : ComponentActivity() {
                         var show by remember {
                             mutableStateOf(false)
                         }
-                        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
-                        Button(onClick = { show = true }) {
-                            Text(text = "Mostrar diálogo")
-                        }    
-                        MyDialog(show = show, onDissmiss = {show = false}, onConfirm = {Log.i("Xevi", "Click")})
+                        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            Button(onClick = { show = true }) {
+                                Text(text = "Mostrar diálogo")
+                            }
+                            MySimpleCustomDialog(show = show, onDismiss = { show = false })
                         }
                     }
                 }
