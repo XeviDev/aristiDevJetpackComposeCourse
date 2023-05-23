@@ -152,7 +152,12 @@ fun LoginDivider() {
 
 @Composable
 fun LoginButton(loginEnable: Boolean) {
-    Button(onClick = {}, modifier = Modifier.fillMaxWidth(), enabled = loginEnable) {
+    Button(onClick = {}, modifier = Modifier.fillMaxWidth(), enabled = loginEnable, colors = ButtonDefaults.buttonColors(
+        backgroundColor = Color(0xFF4EA8E9),
+        disabledBackgroundColor = Color(0xFF78C8F9),
+        contentColor = Color.White,
+        disabledContentColor = Color.White
+    )) {
         Text(text = "Log in")
     }
 }
