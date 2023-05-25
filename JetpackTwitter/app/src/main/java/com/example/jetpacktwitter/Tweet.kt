@@ -1,56 +1,68 @@
 package com.example.jetpacktwitter
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 
 @Composable
-fun Tweet(){
-    Row(
-        Modifier
-            .fillMaxSize()
-            .background(
-                color = Color(0xFF141925)
-            ).padding(16.dp)) {
-        IconProfile()
-        Header()
-        Body()
-        Footer()
+fun Tweet() {
+
+    ConstraintLayout(Modifier.fillMaxSize()) {
+        val (iconProfile, body, header, tweet, img, bottomIcons) = createRefs()
+        IconProfile(Modifier.constrainAs(iconProfile) {
+            top.linkTo(parent.top)
+            start.linkTo(parent.start)
+
+        })
+        HeaderTweet(Modifier.constrainAs(body) {
+            start.linkTo(iconProfile.end)
+            top.linkTo(iconProfile.top)
+        })
     }
-    
-}
-
-@Composable
-fun Footer() {
 
 }
-
 @Composable
-fun Body() {
-
-}
-
-@Composable
-fun Header() {
-    Column(Modifier.fillMaxWidth()){
+fun HeaderTweet(modifier: Modifier) {
+    Row(modifier = modifier.fillMaxWidth()) {
         Text("Xevi", color = Color.White)
+        Text("@XeviDev 4h", color = Color(0xFF656A74))
+        Column() {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_dots),
+                contentDescription = "optionsTweet",
+                tint = Color.White,
+                modifier = modifier.align(Alignment.End)
+
+            )
+        }
+
     }
+
+
 }
 
 @Composable
-fun IconProfile() {
-    Column() {
-        Image(painter = painterResource(id = R.drawable.profile),
-            contentDescription = "profileImg",
-            modifier = Modifier.clip(CircleShape).size(68.dp)
-            )
-    }
+fun IconProfile(modifier: Modifier) {
+
+    Image(
+        painter = painterResource(id = R.drawable.profile),
+        contentDescription = "profileImg",
+        modifier = modifier
+            .clip(CircleShape)
+            .size(68.dp)
+    )
+
 }
+
+
+
