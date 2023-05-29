@@ -13,21 +13,29 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 
 @Composable
 fun Tweet() {
 
-    ConstraintLayout(Modifier.fillMaxSize()) {
+    ConstraintLayout(
+        Modifier
+            .fillMaxSize()
+            .padding(16.dp)) {
         val (iconProfile, tweet) = createRefs()
-        IconProfile(Modifier.constrainAs(iconProfile){
-            top.linkTo(parent.top)
-            start.linkTo(parent.start)
-        }.background(color = Color.Red))
-        TweetPart(Modifier.constrainAs(tweet){
+        IconProfile(
+            Modifier
+                .constrainAs(iconProfile) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                }
+                .background(color = Color.Red))
+        TweetPart(modifier = Modifier.constrainAs(tweet) {
             top.linkTo(parent.top)
             start.linkTo(iconProfile.end)
             end.linkTo(parent.end)
-        }.background(color = Color.Green))
+            width = Dimension.fillToConstraints
+        })
     }
 
 
@@ -35,12 +43,13 @@ fun Tweet() {
 
 @Composable
 fun TweetPart(modifier: Modifier) {
-    ConstraintLayout(modifier = modifier) {
+    ConstraintLayout(modifier = modifier.background(color = Color.Green)) {
         val (header) = createRefs()
-        HeaderTweet(Modifier.constrainAs(header){
+        HeaderTweet(Modifier.constrainAs(header) {
             top.linkTo(parent.top)
             start.linkTo(parent.start)
             end.linkTo(parent.end)
+            width = Dimension.fillToConstraints
         })
 
     }
@@ -48,13 +57,13 @@ fun TweetPart(modifier: Modifier) {
 
 @Composable
 fun HeaderTweet(modifier: Modifier) {
-    ConstraintLayout(modifier = modifier.fillMaxWidth()) {
-        val(name, id, options) = createRefs()
-        Text("Xevi", color = Color.White, modifier = Modifier.constrainAs(name){
+    ConstraintLayout(modifier = modifier) {
+        val (name, id, options) = createRefs()
+        Text("Xevi", color = Color.White, modifier = Modifier.constrainAs(name) {
             top.linkTo(parent.top)
             start.linkTo(parent.start)
         })
-        Text("@XeviDev 4h", color = Color(0xFF656A74), modifier = Modifier.constrainAs(id){
+        Text("@XeviDev 4h", color = Color(0xFF656A74), modifier = Modifier.constrainAs(id) {
             top.linkTo(parent.top)
             start.linkTo(name.end)
         })
@@ -63,38 +72,30 @@ fun HeaderTweet(modifier: Modifier) {
             painter = painterResource(id = R.drawable.ic_dots),
             contentDescription = "optionsTweet",
             tint = Color.White,
-            modifier = Modifier.constrainAs(options){
-                top.linkTo(parent.top)
+            modifier = Modifier.constrainAs(options) {
                 end.linkTo(parent.end)
+
+                top.linkTo(parent.top)
             }
 
         )
     }
 
 
-
-
-
 }
 
 @Composable
 fun IconProfile(modifier: Modifier) {
-ConstraintLayout() {
-    val (icon) = createRefs()
+
+
     Image(
         painter = painterResource(id = R.drawable.profile),
         contentDescription = "profileImg",
         modifier = modifier
             .clip(CircleShape)
             .size(68.dp)
-            .constrainAs(icon) {
-                top.linkTo(parent.top)
-                start.linkTo(parent.start)
-            }
+
     )
-
-}
-
 
 
 }
