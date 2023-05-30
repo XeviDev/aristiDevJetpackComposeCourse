@@ -15,33 +15,28 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstrainedLayoutReference
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.ConstraintLayoutScope
 import androidx.constraintlayout.compose.Dimension
 
 @Composable
 fun Tweet() {
 
     ConstraintLayout(
-        Modifier
-            .fillMaxSize()
-            .padding(16.dp)
+        Modifier.fillMaxSize()
+
     ) {
-        val (iconProfile, tweet, divider) = createRefs()
-        IconProfile(
-            Modifier
-                .constrainAs(iconProfile) {
-                    top.linkTo(parent.top)
-                    start.linkTo(parent.start)
-                }
-        )
-        TweetPart(modifier = Modifier
-            .constrainAs(tweet) {
-                top.linkTo(parent.top)
-                start.linkTo(iconProfile.end)
-                end.linkTo(parent.end)
-                width = Dimension.fillToConstraints
-            }
-            .background(color = Color.Green))
+        val (iconProfile, headerName, headerId, headerOptions, bodyText, bodyImg, footerCommentImg,
+            footerRTImg, footerLikeImg, footerCommentText, footerRTText, footerLikeText, divider) = createRefs()
+
+        IconProfile(Modifier.constrainAs(iconProfile) {
+            top.linkTo(parent.top)
+            start.linkTo(parent.start)
+        }.padding(start = 16.dp, top = 16.dp))
+        HeaderTweet(iconProfile, headerName, headerId, headerOptions)
+        BodyTweet(iconProfile, headerName, bodyText, bodyImg)
+        FooterTweet(iconProfile, bodyImg, divider, footerCommentImg, footerRTImg, footerLikeImg,footerCommentText, footerRTText, footerLikeText)
         Divider(
             Modifier
                 .fillMaxWidth()
@@ -49,134 +44,131 @@ fun Tweet() {
                 .constrainAs(divider) {
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-                    top.linkTo(tweet.bottom)
+                    top.linkTo(footerCommentImg.bottom)
                 })
     }
 
 
 }
 
-@Composable
-fun TweetPart(modifier: Modifier) {
-    ConstraintLayout(modifier = modifier) {
-        val (header, body, footer) = createRefs()
-        HeaderTweet(Modifier.constrainAs(header) {
-            top.linkTo(parent.top)
-            start.linkTo(parent.start)
-            end.linkTo(parent.end)
-            width = Dimension.fillToConstraints
-        })
-        BodyTweet(Modifier.constrainAs(body) {
-            top.linkTo(header.bottom)
-            start.linkTo(parent.start)
-            bottom.linkTo(footer.top)
-            end.linkTo(parent.end)
-            width = Dimension.fillToConstraints
-        })
-        FooterTweet(Modifier.constrainAs(footer) {
-            top.linkTo(body.bottom)
-            start.linkTo(parent.start)
-            end.linkTo(parent.end)
-            bottom.linkTo(parent.bottom)
-            width = Dimension.fillToConstraints
-        })
 
-    }
+@Composable
+fun ConstraintLayoutScope.FooterTweet(
+    startRef: ConstrainedLayoutReference,
+    topRef: ConstrainedLayoutReference,
+    bottomRef: ConstrainedLayoutReference,
+    footerCommentImg: ConstrainedLayoutReference,
+    footerRTImg: ConstrainedLayoutReference,
+    footerLikeImg: ConstrainedLayoutReference,
+    footerCommentText: ConstrainedLayoutReference,
+    footerRTText: ConstrainedLayoutReference,
+    footerLikeText: ConstrainedLayoutReference
+) {
+
+
+    Icon(painter = painterResource(id = R.drawable.ic_chat),
+        contentDescription = "optionsTweet",
+        tint = Color.White,
+        modifier = Modifier.constrainAs(footerCommentImg) {
+            start.linkTo(startRef.end)
+            top.linkTo(topRef.bottom)
+        }
+
+    )
+    Text(text = "1", color = Color.White, modifier = Modifier.constrainAs(footerCommentText){
+        start.linkTo(footerCommentImg.end)
+        top.linkTo(topRef.bottom)
+    })
+    Icon(painter = painterResource(id = R.drawable.ic_rt),
+        contentDescription = "optionsTweet",
+        tint = Color.White,
+        modifier = Modifier.constrainAs(footerRTImg) {
+            end.linkTo(footerLikeImg.start)
+            start.linkTo(footerCommentImg.end)
+            bottom.linkTo(bottomRef.top)
+        }
+
+    )
+    Text(text = "1", color = Color.White, modifier = Modifier.constrainAs(footerRTText){
+        start.linkTo(footerRTImg.end)
+        top.linkTo(topRef.bottom)
+    })
+    Icon(painter = painterResource(id = R.drawable.ic_like),
+        contentDescription = "optionsTweet",
+        tint = Color.White,
+        modifier = Modifier.constrainAs(footerLikeImg) {
+            end.linkTo(footerLikeText.start)
+            top.linkTo(topRef.bottom)
+        }
+
+    )
+    Text(text = "1", color = Color.White, modifier = Modifier.constrainAs(footerLikeText){
+        end.linkTo(parent.end)
+        top.linkTo(topRef.bottom)
+    })
+
 }
 
 @Composable
-fun FooterTweet(modifier: Modifier) {
-    ConstraintLayout(modifier = modifier) {
-        val (comment, rt, like) = createRefs()
-        Icon(
-            painter = painterResource(id = R.drawable.ic_chat),
-            contentDescription = "optionsTweet",
-            tint = Color.White,
-            modifier = Modifier.constrainAs(comment) {
-//                start.linkTo(parent.start)
-//                top.linkTo(parent.top)
-            }
+fun ConstraintLayoutScope.BodyTweet(
+    startRef: ConstrainedLayoutReference,
+    topRef: ConstrainedLayoutReference,
+    bodyText: ConstrainedLayoutReference,
+    bodyImg: ConstrainedLayoutReference
+) {
 
-        )
-        /*Icon(
-            painter = painterResource(id = R.drawable.ic_rt),
-            contentDescription = "optionsTweet",
-            tint = Color.White,
-            modifier = Modifier.constrainAs(rt) {
-                end.linkTo(like.start)
-                top.linkTo(parent.top)
-                start.linkTo(comment.end)
-            }
-
-        )
-        Icon(
-            painter = painterResource(id = R.drawable.ic_like),
-            contentDescription = "optionsTweet",
-            tint = Color.White,
-            modifier = Modifier.constrainAs(like) {
+    Text(
+        text = "Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, non risus vestibulum laoreet ut ut sem. Mauris sollicitudin eros ac",
+        modifier = Modifier.constrainAs(bodyText) {
+            top.linkTo(topRef.bottom)
+            start.linkTo(startRef.end)
+            end.linkTo(parent.end)
+            width = Dimension.fillToConstraints
+        },
+        color = Color.White,
+        maxLines = 5
+    )
+    Image(painter = painterResource(id = R.drawable.profile),
+        contentDescription = "img content",
+        contentScale = ContentScale.Crop,
+        modifier = Modifier
+            .clip(RoundedCornerShape(24.dp))
+            .height(200.dp)
+            .constrainAs(bodyImg) {
+                top.linkTo(bodyText.bottom)
+                start.linkTo(startRef.end)
                 end.linkTo(parent.end)
-                top.linkTo(parent.top)
-            }
+                width = Dimension.fillToConstraints
+            })
 
-        )*/
-    }
 }
 
 @Composable
-fun BodyTweet(modifier: Modifier) {
-    ConstraintLayout(modifier = modifier) {
-        val (text, img) = createRefs()
-        Text(
-            text = "Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, non risus vestibulum laoreet ut ut sem. Mauris sollicitudin eros ac",
-            modifier = Modifier.constrainAs(text) {
-                top.linkTo(parent.bottom)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
+fun ConstraintLayoutScope.HeaderTweet(
+    startRef: ConstrainedLayoutReference,
+    headerName: ConstrainedLayoutReference,
+    headerId: ConstrainedLayoutReference,
+    headerOptions: ConstrainedLayoutReference
+) {
 
-            },
-            color = Color.White,
-            maxLines = 5
-        )
-        Image(
-            painter = painterResource(id = R.drawable.profile),
-            contentDescription = "img content",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .clip(RoundedCornerShape(24.dp))
-                .height(200.dp)
-                .constrainAs(img) {
-                    top.linkTo(text.bottom)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
+    Text("Xevi", color = Color.White, modifier = Modifier.constrainAs(headerName) {
+        top.linkTo(parent.top)
+        start.linkTo(startRef.end)
+    })
+    Text("@XeviDev 4h", color = Color(0xFF656A74), modifier = Modifier.constrainAs(headerId) {
+        top.linkTo(parent.top)
+        start.linkTo(headerName.end)
+    })
 
-                })
-    }
-}
-
-@Composable
-fun HeaderTweet(modifier: Modifier) {
-    ConstraintLayout(modifier = modifier) {
-        val (name, id, options) = createRefs()
-        Text("Xevi", color = Color.White, modifier = Modifier.constrainAs(name) {
+    Icon(painter = painterResource(id = R.drawable.ic_dots),
+        contentDescription = "optionsTweet",
+        tint = Color.White,
+        modifier = Modifier.constrainAs(headerOptions) {
+            end.linkTo(parent.end)
             top.linkTo(parent.top)
-            start.linkTo(parent.start)
-        })
-        Text("@XeviDev 4h", color = Color(0xFF656A74), modifier = Modifier.constrainAs(id) {
-            top.linkTo(parent.top)
-            start.linkTo(name.end)
-        })
+        }
 
-        Icon(
-            painter = painterResource(id = R.drawable.ic_dots),
-            contentDescription = "optionsTweet",
-            tint = Color.White,
-            modifier = Modifier.constrainAs(options) {
-                end.linkTo(parent.end)
-                top.linkTo(parent.top)
-            }
-
-        )
-    }
+    )
 
 
 }
