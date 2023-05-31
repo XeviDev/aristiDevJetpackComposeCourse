@@ -30,13 +30,26 @@ fun Tweet() {
         val (iconProfile, headerName, headerId, headerOptions, bodyText, bodyImg, footerCommentImg,
             footerRTImg, footerLikeImg, footerCommentText, footerRTText, footerLikeText, divider) = createRefs()
 
-        IconProfile(Modifier.constrainAs(iconProfile) {
-            top.linkTo(parent.top)
-            start.linkTo(parent.start)
-        }.padding(start = 16.dp, top = 16.dp))
+        IconProfile(
+            Modifier
+                .constrainAs(iconProfile) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                }
+                .padding(start = 16.dp, top = 16.dp, end = 16.dp))
         HeaderTweet(iconProfile, headerName, headerId, headerOptions)
         BodyTweet(iconProfile, headerName, bodyText, bodyImg)
-        FooterTweet(iconProfile, bodyImg, divider, footerCommentImg, footerRTImg, footerLikeImg,footerCommentText, footerRTText, footerLikeText)
+        FooterTweet(
+            iconProfile,
+            bodyImg,
+            divider,
+            footerCommentImg,
+            footerRTImg,
+            footerLikeImg,
+            footerCommentText,
+            footerRTText,
+            footerLikeText
+        )
         Divider(
             Modifier
                 .fillMaxWidth()
@@ -75,7 +88,7 @@ fun ConstraintLayoutScope.FooterTweet(
         }
 
     )
-    Text(text = "1", color = Color.White, modifier = Modifier.constrainAs(footerCommentText){
+    Text(text = "1", color = Color.White, modifier = Modifier.constrainAs(footerCommentText) {
         start.linkTo(footerCommentImg.end)
         top.linkTo(topRef.bottom)
     })
@@ -89,7 +102,7 @@ fun ConstraintLayoutScope.FooterTweet(
         }
 
     )
-    Text(text = "1", color = Color.White, modifier = Modifier.constrainAs(footerRTText){
+    Text(text = "1", color = Color.White, modifier = Modifier.constrainAs(footerRTText) {
         start.linkTo(footerRTImg.end)
         top.linkTo(topRef.bottom)
     })
@@ -102,7 +115,7 @@ fun ConstraintLayoutScope.FooterTweet(
         }
 
     )
-    Text(text = "1", color = Color.White, modifier = Modifier.constrainAs(footerLikeText){
+    Text(text = "1", color = Color.White, modifier = Modifier.constrainAs(footerLikeText) {
         end.linkTo(parent.end)
         top.linkTo(topRef.bottom)
     })
@@ -124,15 +137,17 @@ fun ConstraintLayoutScope.BodyTweet(
             start.linkTo(startRef.end)
             end.linkTo(parent.end)
             width = Dimension.fillToConstraints
-        },
+        }.padding(end = 16.dp, top = 16.dp),
         color = Color.White,
         maxLines = 5
     )
+    //El orden de los modificadores altera el resultado. Primero el padding.
     Image(painter = painterResource(id = R.drawable.profile),
         contentDescription = "img content",
         contentScale = ContentScale.Crop,
         modifier = Modifier
-            .clip(RoundedCornerShape(24.dp))
+            .padding(end = 16.dp, top = 16.dp)
+            .clip(RoundedCornerShape(16.dp))
             .height(200.dp)
             .constrainAs(bodyImg) {
                 top.linkTo(bodyText.bottom)
@@ -151,22 +166,29 @@ fun ConstraintLayoutScope.HeaderTweet(
     headerOptions: ConstrainedLayoutReference
 ) {
 
-    Text("Xevi", color = Color.White, modifier = Modifier.constrainAs(headerName) {
-        top.linkTo(parent.top)
-        start.linkTo(startRef.end)
-    })
-    Text("@XeviDev 4h", color = Color(0xFF656A74), modifier = Modifier.constrainAs(headerId) {
-        top.linkTo(parent.top)
-        start.linkTo(headerName.end)
-    })
+    Text("Xevi", color = Color.White, modifier = Modifier
+        .constrainAs(headerName) {
+            top.linkTo(parent.top)
+            start.linkTo(startRef.end)
+        }
+        .padding(top = 16.dp))
+    Text("@XeviDev 4h", color = Color(0xFF656A74), modifier = Modifier
+        .constrainAs(headerId) {
+            top.linkTo(parent.top)
+            start.linkTo(headerName.end)
+        }
+        .padding(top = 16.dp))
 
-    Icon(painter = painterResource(id = R.drawable.ic_dots),
+    Icon(
+        painter = painterResource(id = R.drawable.ic_dots),
         contentDescription = "optionsTweet",
         tint = Color.White,
-        modifier = Modifier.constrainAs(headerOptions) {
-            end.linkTo(parent.end)
-            top.linkTo(parent.top)
-        }
+        modifier = Modifier
+            .constrainAs(headerOptions) {
+                end.linkTo(parent.end)
+                top.linkTo(parent.top)
+            }
+            .padding(end = 16.dp, top = 16.dp)
 
     )
 
