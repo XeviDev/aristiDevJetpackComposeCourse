@@ -7,18 +7,27 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstrainedLayoutReference
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintLayoutScope
 import androidx.constraintlayout.compose.Dimension
+
+
+val colorTw: Color = Color(0xFF656A74)
 
 @Composable
 fun Tweet() {
@@ -28,7 +37,8 @@ fun Tweet() {
 
     ) {
         val (iconProfile, headerName, headerId, headerOptions, bodyText, bodyImg, footerCommentImg,
-            footerRTImg, footerLikeImg, footerCommentText, footerRTText, footerLikeText, divider) = createRefs()
+            footerRTImg, footerLikeImg, footerCommentIB,
+            footerRTIB, footerLikeIB, footerCommentText, footerRTText, footerLikeText, divider) = createRefs()
 
         IconProfile(
             Modifier
@@ -46,6 +56,9 @@ fun Tweet() {
             footerCommentImg,
             footerRTImg,
             footerLikeImg,
+            footerCommentIB,
+            footerRTIB,
+            footerLikeIB,
             footerCommentText,
             footerRTText,
             footerLikeText
@@ -54,11 +67,11 @@ fun Tweet() {
             Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp)
-                .background(color = Color.Red)
+                .background(color = colorTw)
                 .constrainAs(divider) {
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-                    top.linkTo(footerCommentImg.bottom)
+                    top.linkTo(footerCommentIB.bottom)
                 })
     }
 
@@ -74,52 +87,138 @@ fun ConstraintLayoutScope.FooterTweet(
     footerCommentImg: ConstrainedLayoutReference,
     footerRTImg: ConstrainedLayoutReference,
     footerLikeImg: ConstrainedLayoutReference,
+    footerCommentIB: ConstrainedLayoutReference,
+    footerRTIB: ConstrainedLayoutReference,
+    footerLikeIB: ConstrainedLayoutReference,
     footerCommentText: ConstrainedLayoutReference,
     footerRTText: ConstrainedLayoutReference,
     footerLikeText: ConstrainedLayoutReference
 ) {
 
+    var commentControl by rememberSaveable {
+        mutableStateOf(false)
+    }
+    var commentTextControl by rememberSaveable {
+        mutableStateOf(1)
+    }
+    IconButton(onClick = {
+        commentControl = !commentControl
+        if (commentControl) {
+            commentTextControl += 1
+        } else {
+            commentTextControl -= 1
+        }
+    }, modifier = Modifier
 
-    Icon(painter = painterResource(id = R.drawable.ic_chat),
-        contentDescription = "optionsTweet",
-        tint = Color.White,
-        modifier = Modifier.padding(start = 32.dp,end=4.dp).constrainAs(footerCommentImg) {
+        .constrainAs(footerCommentIB) {
             start.linkTo(startRef.end)
             top.linkTo(topRef.bottom)
         }
-
-    )
-    Text(text = "1", color = Color.White, modifier = Modifier.constrainAs(footerCommentText) {
-        start.linkTo(footerCommentImg.end)
-        top.linkTo(topRef.bottom)
-    })
-    Icon(painter = painterResource(id = R.drawable.ic_rt),
-        contentDescription = "optionsTweet",
-        tint = Color.White,
-        modifier = Modifier.size(28.dp).constrainAs(footerRTImg) {
-            end.linkTo(footerLikeImg.start)
-            start.linkTo(footerCommentImg.end)
-            bottom.linkTo(bottomRef.top)
+        .padding(start = 32.dp, end = 4.dp)) {
+        Row() {
+            Icon(
+                painter = if (commentControl) {
+                    painterResource(id = R.drawable.ic_chat_filled)
+                } else {
+                    painterResource(id = R.drawable.ic_chat)
+                },
+                contentDescription = "optionsTweet",
+                tint = colorTw
+            )
+            Text(
+                text = commentTextControl.toString(),
+                color = colorTw,
+                modifier = Modifier.padding(start = 8.dp)
+            )
         }
 
-    )
-    Text(text = "1", color = Color.White, modifier = Modifier.constrainAs(footerRTText) {
-        start.linkTo(footerRTImg.end)
-        top.linkTo(topRef.bottom)
-    })
-    Icon(painter = painterResource(id = R.drawable.ic_like),
-        contentDescription = "optionsTweet",
-        tint = Color.White,
-        modifier = Modifier.constrainAs(footerLikeImg) {
-            end.linkTo(footerLikeText.start)
+
+    }
+
+    var rtControl by rememberSaveable {
+        mutableStateOf(false)
+    }
+    var rtTextControl by rememberSaveable {
+        mutableStateOf(1)
+    }
+    IconButton(onClick = {
+        rtControl = !rtControl
+        if (rtControl) {
+            rtTextControl += 1
+        } else {
+            rtTextControl -= 1
+        }
+    }, modifier = Modifier
+
+        .constrainAs(footerRTIB) {
+            start.linkTo(footerCommentIB.end)
+            end.linkTo(footerLikeIB.start)
             top.linkTo(topRef.bottom)
         }
+        .padding()) {
+        Row() {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_rt),
+                contentDescription = "optionsTweet",
+                tint = if (rtControl) {
+                    Color.Green
+                } else {
+                    colorTw
+                },
+                modifier = Modifier
+                    .size(28.dp)
+            )
+            Text(
+                text =
+                rtTextControl.toString(),
+                fontSize = 17.sp,
+                color = colorTw,
+                modifier = Modifier.padding(start = 8.dp)
+            )
+        }
+    }
 
-    )
-    Text(text = "1", color = Color.White, modifier = Modifier.padding(start = 4.dp,end=32.dp).constrainAs(footerLikeText) {
-        end.linkTo(parent.end)
-        top.linkTo(topRef.bottom)
-    })
+    var likeControl by rememberSaveable {
+        mutableStateOf(false)
+    }
+    var likeTextControl by rememberSaveable {
+        mutableStateOf(1)
+    }
+    IconButton(onClick = {
+        likeControl = !likeControl
+        if (likeControl) {
+            likeTextControl += 1
+        } else {
+            likeTextControl -= 1
+        }
+    }, modifier = Modifier
+
+        .constrainAs(footerLikeIB) {
+            end.linkTo(parent.end)
+            top.linkTo(topRef.bottom)
+        }
+        .padding(end = 32.dp)) {
+        Row() {
+            Icon(
+                painter = if (likeControl) {
+                    painterResource(id = R.drawable.ic_like_filled)
+                } else {
+                    painterResource(id = R.drawable.ic_like)
+                },
+                contentDescription = "optionsTweet",
+                tint = if (likeControl) {
+                    Color.Red
+                } else {
+                    colorTw
+                }
+            )
+            Text(
+                text = likeTextControl.toString(),
+                color = colorTw,
+                modifier = Modifier.padding(start = 8.dp)
+            )
+        }
+    }
 
 }
 
@@ -133,12 +232,14 @@ fun ConstraintLayoutScope.BodyTweet(
 
     Text(
         text = "Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, non risus vestibulum laoreet ut ut sem. Mauris sollicitudin eros ac",
-        modifier = Modifier.constrainAs(bodyText) {
-            top.linkTo(topRef.bottom)
-            start.linkTo(startRef.end)
-            end.linkTo(parent.end)
-            width = Dimension.fillToConstraints
-        }.padding(end = 16.dp, top = 16.dp),
+        modifier = Modifier
+            .constrainAs(bodyText) {
+                top.linkTo(topRef.bottom)
+                start.linkTo(startRef.end)
+                end.linkTo(parent.end)
+                width = Dimension.fillToConstraints
+            }
+            .padding(end = 16.dp, top = 16.dp),
         color = Color.White,
         maxLines = 5
     )
@@ -168,12 +269,13 @@ fun ConstraintLayoutScope.HeaderTweet(
 ) {
 
     Text("Xevi", color = Color.White, modifier = Modifier
+        .padding(end = 8.dp)
         .constrainAs(headerName) {
             top.linkTo(parent.top)
             start.linkTo(startRef.end)
         }
         .padding(top = 16.dp))
-    Text("@XeviDev 4h", color = Color(0xFF656A74), modifier = Modifier
+    Text("@XeviDev 4h", color = colorTw, modifier = Modifier
         .constrainAs(headerId) {
             top.linkTo(parent.top)
             start.linkTo(headerName.end)
@@ -211,6 +313,8 @@ fun IconProfile(modifier: Modifier) {
 
 
 }
+
+
 
 
 
