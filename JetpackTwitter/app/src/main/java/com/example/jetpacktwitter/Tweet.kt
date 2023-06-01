@@ -36,9 +36,8 @@ fun Tweet() {
         Modifier.fillMaxSize()
 
     ) {
-        val (iconProfile, headerName, headerId, headerOptions, bodyText, bodyImg, footerCommentImg,
-            footerRTImg, footerLikeImg, footerCommentIB,
-            footerRTIB, footerLikeIB, footerCommentText, footerRTText, footerLikeText, divider) = createRefs()
+        val (iconProfile, headerName, headerId, headerOptions, bodyText, bodyImg, footerCommentIB,
+            footerRTIB, footerLikeIB, divider) = createRefs()
 
         IconProfile(
             Modifier
@@ -52,16 +51,9 @@ fun Tweet() {
         FooterTweet(
             iconProfile,
             bodyImg,
-            divider,
-            footerCommentImg,
-            footerRTImg,
-            footerLikeImg,
             footerCommentIB,
             footerRTIB,
-            footerLikeIB,
-            footerCommentText,
-            footerRTText,
-            footerLikeText
+            footerLikeIB
         )
         Divider(
             Modifier
@@ -83,16 +75,9 @@ fun Tweet() {
 fun ConstraintLayoutScope.FooterTweet(
     startRef: ConstrainedLayoutReference,
     topRef: ConstrainedLayoutReference,
-    bottomRef: ConstrainedLayoutReference,
-    footerCommentImg: ConstrainedLayoutReference,
-    footerRTImg: ConstrainedLayoutReference,
-    footerLikeImg: ConstrainedLayoutReference,
     footerCommentIB: ConstrainedLayoutReference,
     footerRTIB: ConstrainedLayoutReference,
-    footerLikeIB: ConstrainedLayoutReference,
-    footerCommentText: ConstrainedLayoutReference,
-    footerRTText: ConstrainedLayoutReference,
-    footerLikeText: ConstrainedLayoutReference
+    footerLikeIB: ConstrainedLayoutReference
 ) {
 
     var commentControl by rememberSaveable {
