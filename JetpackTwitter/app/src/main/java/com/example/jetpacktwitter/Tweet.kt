@@ -53,6 +53,7 @@ fun Tweet() {
         Divider(
             Modifier
                 .fillMaxWidth()
+                .padding(top = 16.dp)
                 .background(color = Color.Red)
                 .constrainAs(divider) {
                     start.linkTo(parent.start)
@@ -82,7 +83,7 @@ fun ConstraintLayoutScope.FooterTweet(
     Icon(painter = painterResource(id = R.drawable.ic_chat),
         contentDescription = "optionsTweet",
         tint = Color.White,
-        modifier = Modifier.constrainAs(footerCommentImg) {
+        modifier = Modifier.padding(start = 32.dp,end=4.dp).constrainAs(footerCommentImg) {
             start.linkTo(startRef.end)
             top.linkTo(topRef.bottom)
         }
@@ -95,7 +96,7 @@ fun ConstraintLayoutScope.FooterTweet(
     Icon(painter = painterResource(id = R.drawable.ic_rt),
         contentDescription = "optionsTweet",
         tint = Color.White,
-        modifier = Modifier.constrainAs(footerRTImg) {
+        modifier = Modifier.size(28.dp).constrainAs(footerRTImg) {
             end.linkTo(footerLikeImg.start)
             start.linkTo(footerCommentImg.end)
             bottom.linkTo(bottomRef.top)
@@ -115,7 +116,7 @@ fun ConstraintLayoutScope.FooterTweet(
         }
 
     )
-    Text(text = "1", color = Color.White, modifier = Modifier.constrainAs(footerLikeText) {
+    Text(text = "1", color = Color.White, modifier = Modifier.padding(start = 4.dp,end=32.dp).constrainAs(footerLikeText) {
         end.linkTo(parent.end)
         top.linkTo(topRef.bottom)
     })
@@ -146,7 +147,7 @@ fun ConstraintLayoutScope.BodyTweet(
         contentDescription = "img content",
         contentScale = ContentScale.Crop,
         modifier = Modifier
-            .padding(end = 16.dp, top = 16.dp)
+            .padding(end = 16.dp, top = 16.dp, bottom = 16.dp)
             .clip(RoundedCornerShape(16.dp))
             .height(200.dp)
             .constrainAs(bodyImg) {
