@@ -160,7 +160,7 @@ fun LoginButton(loginEnable: Boolean) {
     )) {
         Text(text = "Log in")
     }
-} 
+}
 
 @Composable
 fun ForgotPassword(modifier: Modifier) {

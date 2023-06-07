@@ -50,17 +50,7 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
                 ) {
-                    Column() {
-                        var show by remember {
-                            mutableStateOf(false)
-                        }
-                        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                            Button(onClick = { show = true }) {
-                                Text(text = "Mostrar diálogo")
-                            }
-                            MyConfirmationDialog(show = show, onDismiss = { show = false })
-                        }
-                    }
+                   SimpleRecyclerView()
                 }
             }
         }
