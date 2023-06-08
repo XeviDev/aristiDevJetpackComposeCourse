@@ -8,6 +8,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Card
 import androidx.compose.material.Text
@@ -47,11 +50,34 @@ fun SuperHeroView() {
             //Esto es para renombrar it
                 superhero ->
             //Al ponerle llaves es la lambda
-            ItemHero(superHero = superhero){
+            ItemHero(superHero = superhero) {
                 Toast.makeText(context, it.superheroName, Toast.LENGTH_SHORT).show()
             }
         }
     }
+}
+
+@Composable
+fun SuperHeroGridView() {
+    //El context hay que tenerlo fuera de la función
+    val context = LocalContext.current
+    //El spacedBy se encarga que entre los elementos haya el espacio dado
+    //El content padding pone padding alrededor del grid, NO entre elementos
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        contentPadding = PaddingValues(18.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(20.dp),
+        content = {
+            items(getSuperHeroes()) {
+                //Esto es para renombrar it
+                    superhero ->
+                //Al ponerle llaves es la lambda
+                ItemHero(superHero = superhero) {
+                    Toast.makeText(context, it.superheroName, Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
 }
 
 @Composable
