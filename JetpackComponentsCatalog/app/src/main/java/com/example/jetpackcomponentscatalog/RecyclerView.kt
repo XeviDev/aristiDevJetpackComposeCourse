@@ -11,10 +11,13 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,6 +27,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.jetpackcomponentscatalog.model.SuperHero
+import kotlinx.coroutines.launch
 
 @Composable
 fun SimpleRecyclerView() {
@@ -55,6 +59,55 @@ fun SuperHeroView() {
             }
         }
     }
+}
+
+@Composable
+fun SuperHeroWithSpecialControsView() {
+    //El context hay que tenerlo fuera de la función
+    val context = LocalContext.current
+    val rvState = rememberLazyListState()
+    val coroutinesScope = rememberCoroutineScope()
+    Column {
+        //El spacedBy se encarga que entre los elementos haya el espacio dado
+        LazyColumn(
+            state = rvState,
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.weight(1f)
+        ) {
+            items(getSuperHeroes()) {
+                //Esto es para renombrar it
+                    superhero ->
+                //Al ponerle llaves es la lambda
+                ItemHero(superHero = superhero) {
+                    Toast.makeText(context, it.superheroName, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        //Recordar de importar el runtime.*
+        val showButton by remember {
+            //Si no ponemos el derivedStateOf, lo que haría sería que
+            //cada vez que se mueve un pixel, haría la comprobación.
+            // Y ESO NO ES ÓPTIMO.
+
+            //Es un estado intermedio que lo simplifica
+            derivedStateOf { rvState.firstVisibleItemIndex > 0 }
+        }
+        if (showButton) {
+            Button(
+                onClick = {
+                    coroutinesScope.launch {
+                        rvState.animateScrollToItem(0)
+                    }
+                }, modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(16.dp)
+            ) {
+                Text(text = "Soy un Boton molon")
+            }
+        }
+    }
+
 }
 
 @Composable
