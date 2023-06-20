@@ -2,9 +2,7 @@ package com.example.jetpackcomponentscatalog
 
 import android.content.ClipData.Item
 import android.widget.Toast
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -40,6 +38,40 @@ fun SimpleRecyclerView() {
             Text(text = "hola me llamo $it")
         }
         item { Text(text = "Footer") }
+
+    }
+}
+
+@ExperimentalFoundationApi
+@Composable
+fun SuperHeroStickyView() {
+    //El context hay que tenerlo fuera de la función
+    val context = LocalContext.current
+    //Con esto lo que dice que si el publisher es MArvel, va a coger todos los objetos
+    // que tengan de publisher MArvel
+    val superHero: Map<String, List<SuperHero>> = getSuperHeroes().groupBy { it.publisher }
+    //El spacedBy se encarga que entre los elementos haya el espacio dado
+    LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        superHero.forEach { (publisher, mySuperHero) ->
+            stickyHeader {
+                Text(
+                    text = publisher, modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color.Green), fontSize = 16.sp, color = Color.White
+                )
+            }
+            items(mySuperHero) {
+
+                //Esto es para renombrar it
+                    superhero ->
+                //Al ponerle llaves es la lambda
+                ItemHero(superHero = superhero) {
+                    Toast.makeText(context, it.superheroName, Toast.LENGTH_SHORT).show()
+                }
+            }
+
+        }
+
 
     }
 }
@@ -140,7 +172,7 @@ fun ItemHero(superHero: SuperHero, onItemSelected: (SuperHero) -> Unit) {
     Card(
         border = BorderStroke(2.dp, Color.Red),
         modifier = Modifier
-            .width(200.dp)
+            .fillMaxWidth()
             .clickable { onItemSelected(superHero) }) {
         Column {
             Image(
@@ -174,10 +206,10 @@ fun getSuperHeroes(): List<SuperHero> {
     return listOf(
         SuperHero("Spiderman", "Petter Parker", "Marvel", R.drawable.spiderman),
         SuperHero("Logan", "Logan", "Logan", R.drawable.logan),
-        SuperHero("Batman", "Batman Parker", "Batman", R.drawable.batman),
+        SuperHero("Batman", "Batman Parker", "Marvel", R.drawable.batman),
         SuperHero("Thor", "Thor", "Thor", R.drawable.thor),
         SuperHero("Flash", "Flash", "Flash", R.drawable.flash),
-        SuperHero("Green Lantern", "Green Lantern", "Lantern", R.drawable.green_lantern),
+        SuperHero("Green Lantern", "Green Lantern", "Marvel", R.drawable.green_lantern),
         SuperHero("Wonder Woman", "Wonder Woman", "Wonder Woman", R.drawable.wonder_woman)
     )
 }
