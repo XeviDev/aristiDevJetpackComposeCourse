@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.jetpackcomponentscatalog.model.Routes
 import com.example.jetpackcomponentscatalog.ui.CheckInfo
 import com.example.jetpackcomponentscatalog.ui.theme.JetpackComponentsCatalogTheme
 
@@ -45,14 +46,14 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
                 ) {
                     val navigationController = rememberNavController()
-                    NavHost(navController = navigationController, startDestination = "pantalla1") {
-                        composable("pantalla1") {
+                    NavHost(navController = navigationController, startDestination = Routes.Pantalla1.route) {
+                        composable(Routes.Pantalla1.route) {
                             Screen1(navigationController)
                         }
-                        composable("pantalla2") {
+                        composable(Routes.Pantalla2.route) {
                             Screen2(navigationController)
                         }
-                        composable("pantalla3") {
+                        composable(Routes.Pantalla3.route) {
                             Screen3(navigationController)
                         }
 
