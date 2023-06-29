@@ -1,13 +1,11 @@
 package com.example.jetpackcomponentscatalog
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
@@ -27,11 +25,13 @@ import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.jetpackcomponentscatalog.ui.CheckInfo
 import com.example.jetpackcomponentscatalog.ui.theme.JetpackComponentsCatalogTheme
 
@@ -44,7 +44,19 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
                 ) {
-                    ScaffoldExample()
+                    val navigationController = rememberNavController()
+                    NavHost(navController = navigationController, startDestination = "pantalla1") {
+                        composable("pantalla1") {
+                            Screen1(navigationController)
+                        }
+                        composable("pantalla2") {
+                            Screen2(navigationController)
+                        }
+                        composable("pantalla3") {
+                            Screen3(navigationController)
+                        }
+
+                    }
                 }
             }
         }
@@ -54,8 +66,7 @@ class MainActivity : ComponentActivity() {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    JetpackComponentsCatalogTheme {
-    }
+    JetpackComponentsCatalogTheme {}
 }
 
 @Composable
@@ -78,15 +89,13 @@ fun MyDropDownMenu() {
         mutableStateOf(desserts[0])
     }
     Column(Modifier.padding(20.dp)) {
-        OutlinedTextField(
-            value = selectedText,
+        OutlinedTextField(value = selectedText,
             onValueChange = { selectedText = it },
             enabled = false,
             readOnly = true,
             modifier = Modifier
                 .clickable { expanded = true }
-                .fillMaxWidth()
-        )
+                .fillMaxWidth())
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false },
@@ -108,9 +117,7 @@ fun MyDropDownMenu() {
 fun MyBadgeBox() {
     BadgedBox(badge = {
         Badge(
-            content = { Text("100") },
-            backgroundColor = Color.Blue,
-            contentColor = Color.Green
+            content = { Text("100") }, backgroundColor = Color.Blue, contentColor = Color.Green
         )
     }, Modifier.padding(16.dp)) {
         Icon(imageVector = Icons.Default.Star, contentDescription = "")
@@ -156,26 +163,19 @@ fun MyRadioButtonList(selected: String, onItemSelected: (String) -> Unit) {
 
     Column(Modifier.fillMaxWidth()) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            RadioButton(
-                selected = selected == "Xevi", onClick = { onItemSelected("Xevi") })
+            RadioButton(selected = selected == "Xevi", onClick = { onItemSelected("Xevi") })
             Text(text = "Xevi")
         }
         Row(verticalAlignment = Alignment.CenterVertically) {
-            RadioButton(
-                selected = selected == "Juan", onClick = { onItemSelected("Juan") }
-            )
+            RadioButton(selected = selected == "Juan", onClick = { onItemSelected("Juan") })
             Text(text = "Juan")
         }
         Row(verticalAlignment = Alignment.CenterVertically) {
-            RadioButton(
-                selected = selected == "Koke", onClick = { onItemSelected("Koke") }
-            )
+            RadioButton(selected = selected == "Koke", onClick = { onItemSelected("Koke") })
             Text(text = "Koke")
         }
         Row(verticalAlignment = Alignment.CenterVertically) {
-            RadioButton(
-                selected = selected == "Carlos", onClick = { onItemSelected("Carlos") }
-            )
+            RadioButton(selected = selected == "Carlos", onClick = { onItemSelected("Carlos") })
             Text(text = "Carlos")
         }
 
@@ -205,11 +205,9 @@ fun getOptions(titles: List<String>): List<CheckInfo> {
         var status by rememberSaveable {
             mutableStateOf(false)
         }
-        CheckInfo(
-            title = it,
+        CheckInfo(title = it,
             selected = status,
-            onCheckedChange = { myNewStatus -> status = myNewStatus }
-        )
+            onCheckedChange = { myNewStatus -> status = myNewStatus })
     }
 
 
@@ -220,8 +218,7 @@ fun getOptions(titles: List<String>): List<CheckInfo> {
 fun MyCheckboxWithTextCompleted(checkInfo: CheckInfo) {
     Row(Modifier.padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
 
-        Checkbox(
-            checked = checkInfo.selected,
+        Checkbox(checked = checkInfo.selected,
             onCheckedChange = { checkInfo.onCheckedChange(!checkInfo.selected) })
         Spacer(modifier = Modifier.width(8.dp))
         Text(text = checkInfo.title)
@@ -251,9 +248,7 @@ fun MyCheckbox() {
         onCheckedChange = { state = !state },
         enabled = true,
         colors = CheckboxDefaults.colors(
-            checkedColor = Color.Red,
-            uncheckedColor = Color.Blue,
-            checkmarkColor = Color.Green
+            checkedColor = Color.Red, uncheckedColor = Color.Blue, checkmarkColor = Color.Green
         )
     )
 }
@@ -335,9 +330,7 @@ fun MyProgress() {
 @Composable
 fun MyIcon() {
     Icon(
-        imageVector = Icons.Rounded.Star,
-        tint = Color.Red,
-        contentDescription = "Icono"
+        imageVector = Icons.Rounded.Star, tint = Color.Red, contentDescription = "Icono"
     )
 }
 
