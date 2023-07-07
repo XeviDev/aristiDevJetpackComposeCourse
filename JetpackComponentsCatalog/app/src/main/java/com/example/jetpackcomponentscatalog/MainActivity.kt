@@ -62,13 +62,22 @@ class MainActivity : ComponentActivity() {
                             Screen3(navigationController)
                         }
                         composable(
-                            "pantalla4/{name}",
-                            arguments = listOf(navArgument("name") { type = NavType.IntType })
+                            Routes.Pantalla4.route,
+                            arguments = listOf(navArgument("age") { type = NavType.IntType })
                         ) { backStackEntry ->
                             Screen4(
                                 navigationController,
                                 //El ?: es para poner valor por defecto.
-                                backStackEntry.arguments?.getInt("name") ?: 0
+                                backStackEntry.arguments?.getInt("age") ?: 0
+                            )
+                        }
+
+                        composable(
+                            Routes.Pantalla5.route,
+                            arguments = listOf(navArgument("name") { defaultValue = "El PEPE" })
+                        ) { backStackEntry ->
+                            Screen5(
+                                navigationController, backStackEntry.arguments?.getString("name")
                             )
                         }
 
