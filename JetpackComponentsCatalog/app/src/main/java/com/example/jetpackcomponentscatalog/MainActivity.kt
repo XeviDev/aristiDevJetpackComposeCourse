@@ -29,9 +29,11 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.jetpackcomponentscatalog.model.Routes
 import com.example.jetpackcomponentscatalog.ui.CheckInfo
 import com.example.jetpackcomponentscatalog.ui.theme.JetpackComponentsCatalogTheme
@@ -46,7 +48,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
                 ) {
                     val navigationController = rememberNavController()
-                    NavHost(navController = navigationController, startDestination = Routes.Pantalla1.route) {
+                    NavHost(
+                        navController = navigationController,
+                        startDestination = Routes.Pantalla1.route
+                    ) {
                         composable(Routes.Pantalla1.route) {
                             Screen1(navigationController)
                         }
@@ -55,6 +60,16 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(Routes.Pantalla3.route) {
                             Screen3(navigationController)
+                        }
+                        composable(
+                            "pantalla4/{name}",
+                            arguments = listOf(navArgument("name") { type = NavType.IntType })
+                        ) { backStackEntry ->
+                            Screen4(
+                                navigationController,
+                                //El ?: es para poner valor por defecto.
+                                backStackEntry.arguments?.getInt("name") ?: 0
+                            )
                         }
 
                     }

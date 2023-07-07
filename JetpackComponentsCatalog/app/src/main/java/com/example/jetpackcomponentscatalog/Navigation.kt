@@ -14,31 +14,56 @@ import com.example.jetpackcomponentscatalog.model.Routes
 
 @Composable
 fun Screen1(navController: NavHostController) {
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(Color.Cyan)){
-        Text(text = "Pantalla 1", modifier = Modifier.align(Alignment.Center).clickable {
-            navController.navigate(Routes.Pantalla2.route)
-         })
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Cyan)
+    ) {
+        Text(text = "Pantalla 1", modifier = Modifier
+            .align(Alignment.Center)
+            .clickable {
+                navController.navigate(Routes.Pantalla2.route)
+            })
     }
 }
 
 @Composable
 fun Screen2(navController: NavHostController) {
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(Color.Green)){
-        Text(text = "Pantalla 2", modifier = Modifier.align(Alignment.Center).clickable {
-            navController.navigate(Routes.Pantalla3.route)
-        })
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Green)
+    ) {
+        Text(text = "Pantalla 2", modifier = Modifier
+            .align(Alignment.Center)
+            .clickable {
+                navController.navigate(Routes.Pantalla3.route)
+            })
     }
 }
 
 @Composable
 fun Screen3(navController: NavHostController) {
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(Color.Magenta)){
-        Text(text = "Pantalla 3", modifier = Modifier.align(Alignment.Center))
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Magenta)
+    ) {
+        Text(
+            text = "Pantalla 3",
+            modifier = Modifier
+                .align(Alignment.Center)
+                .clickable { navController.navigate("pantalla4/666") })
+    }
+}
+
+@Composable
+fun Screen4(navController: NavHostController, name: Int) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Yellow)
+    ) {
+        Text(text = name.toString(), modifier = Modifier.align(Alignment.Center))
     }
 }
