@@ -13,6 +13,7 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -26,6 +27,20 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.jetpackcomposeinstagram.login.LoginViewModel
+
+@Composable
+fun LoginScreen(loginViewModel: LoginViewModel) {
+    Box(
+        Modifier
+            .fillMaxSize()
+            .padding(8.dp)
+    ) {
+        Header(Modifier.align(Alignment.TopEnd))
+        Body(Modifier.align(Alignment.Center), loginViewModel)
+        Footer(Modifier.align(Alignment.BottomCenter))
+    }
+}
 
 @Composable
 fun Footer(modifier: Modifier) {
@@ -39,57 +54,41 @@ fun Footer(modifier: Modifier) {
         Spacer(modifier = Modifier.size(24.dp))
         SignUp()
         Spacer(modifier = Modifier.size(24.dp))
-
     }
 }
 
 @Composable
 fun SignUp() {
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-        Text(text = "Don't have an account?", fontSize = 12.sp, color = Color(0xFFB5B5B5))
+        Text(
+            text = "Don't have an account?", fontSize = 12.sp, color = Color(0xFFB5B5B5)
+        )
         Text(
             text = "Sign up.",
             Modifier.padding(horizontal = 8.dp),
             fontSize = 12.sp,
             fontWeight = FontWeight.Bold,
-            color = Color(0xFF4EA8E9)
+            color = Color(0xFF4EA8E9),
         )
     }
 }
 
 @Composable
-fun LoginScreen() {
-    Box(
-        Modifier
-            .fillMaxSize()
-            .padding(8.dp)
-    ) {
-        //Al querer ponerle el alignment al icono, no se podrá
-        //ya que el alignment es sólo para componentes que esten en una caja.
-        //Por tanto, se le pasa por parámetros.
-        Header(Modifier.align(Alignment.TopEnd))
-        Body(Modifier.align(Alignment.Center))
-        Footer((Modifier.align(Alignment.BottomCenter)))
-    }
-}
+fun Body(modifier: Modifier, loginViewModel: LoginViewModel) {
+    val email:String by loginViewModel.email.observeAsState(initial = "")
+    val password:String by loginViewModel.password.observeAsState(initial = "")
+    val isLoginEnable:Boolean by loginViewModel.isLoginEnable.observeAsState(initial = false)
 
-@Composable
-fun Body(modifier: Modifier) {
-    var email by rememberSaveable {
-        mutableStateOf("")
-    }
-    var password by rememberSaveable {
-        mutableStateOf("")
-    }
-    var isLoginEnable by rememberSaveable() {
-        mutableStateOf(false)
-    }
     Column(modifier = modifier) {
         ImageLogo(Modifier.align(Alignment.CenterHorizontally))
         Spacer(modifier = Modifier.size(16.dp))
-        Email(email) { email = it }
+        Email(email) {
+            loginViewModel.onLoginChanged(email = it, password = password)
+        }
         Spacer(modifier = Modifier.size(4.dp))
-        Password(password) { password = it }
+        Password(password) {
+            loginViewModel.onLoginChanged(email = email, password = it)
+        }
         Spacer(modifier = Modifier.size(8.dp))
         ForgotPassword(Modifier.align(Alignment.End))
         Spacer(modifier = Modifier.size(16.dp))
@@ -99,7 +98,6 @@ fun Body(modifier: Modifier) {
         Spacer(modifier = Modifier.size(32.dp))
         SocialLogin()
     }
-
 }
 
 @Composable
@@ -111,18 +109,17 @@ fun SocialLogin() {
     ) {
         Image(
             painter = painterResource(id = R.drawable.fb),
-            contentDescription = "Social login FB",
+            contentDescription = "Social login fb",
             modifier = Modifier.size(16.dp)
         )
         Text(
-            text = "Continue as Xevi",
-            fontWeight = FontWeight.Bold,
+            text = "Continue as Aris",
             fontSize = 14.sp,
+            fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(horizontal = 8.dp),
             color = Color(0xFF4EA8E9)
         )
     }
-
 }
 
 @Composable
@@ -152,21 +149,27 @@ fun LoginDivider() {
 
 @Composable
 fun LoginButton(loginEnable: Boolean) {
-    Button(onClick = {}, modifier = Modifier.fillMaxWidth(), enabled = loginEnable, colors = ButtonDefaults.buttonColors(
-        backgroundColor = Color(0xFF4EA8E9),
-        disabledBackgroundColor = Color(0xFF78C8F9),
-        contentColor = Color.White,
-        disabledContentColor = Color.White
-    )) {
-        Text(text = "Log in")
+    Button(
+        onClick = { },
+        enabled = loginEnable,
+        modifier = Modifier.fillMaxWidth(),
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = Color(0xFF4EA8E9),
+            disabledBackgroundColor = Color(0xFF78C8F9),
+            contentColor = Color.White,
+            disabledContentColor = Color.White
+        )
+    ) {
+        Text(text = "Log In")
     }
 }
+
 
 @Composable
 fun ForgotPassword(modifier: Modifier) {
     Text(
         text = "Forgot password?",
-        fontSize = 11.sp,
+        fontSize = 12.sp,
         fontWeight = FontWeight.Bold,
         color = Color(0xFF4EA8E9),
         modifier = modifier
@@ -175,23 +178,21 @@ fun ForgotPassword(modifier: Modifier) {
 
 @Composable
 fun Password(password: String, onTextChanged: (String) -> Unit) {
-    var passwordVisibility by remember {
-        mutableStateOf(false)
-    }
+    var passwordVisibility by remember { mutableStateOf(false) }
     TextField(
-        modifier = Modifier.fillMaxWidth(),
         value = password,
         onValueChange = { onTextChanged(it) },
-        placeholder = { Text(text = "Password") },
-        maxLines = 1,
-        singleLine = true,
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        modifier = Modifier.fillMaxWidth(),
+        placeholder = { Text("Password") },
         colors = TextFieldDefaults.textFieldColors(
             textColor = Color(0xFFB2B2B2),
             backgroundColor = Color(0xFFFAFAFA),
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent
         ),
+        singleLine = true,
+        maxLines = 1,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         trailingIcon = {
             val imagen = if (passwordVisibility) {
                 Icons.Filled.VisibilityOff
@@ -213,9 +214,9 @@ fun Password(password: String, onTextChanged: (String) -> Unit) {
 @Composable
 fun Email(email: String, onTextChanged: (String) -> Unit) {
     TextField(
-        modifier = Modifier.fillMaxWidth(),
         value = email,
         onValueChange = { onTextChanged(it) },
+        modifier = Modifier.fillMaxWidth(),
         placeholder = { Text(text = "Email") },
         maxLines = 1,
         singleLine = true,
@@ -241,7 +242,8 @@ fun ImageLogo(modifier: Modifier) {
 @Composable
 fun Header(modifier: Modifier) {
     val activity = LocalContext.current as Activity
-    Icon(imageVector = Icons.Default.Close,
+    Icon(
+        imageVector = Icons.Default.Close,
         contentDescription = "close app",
         modifier = modifier.clickable { activity.finish() })
 }
