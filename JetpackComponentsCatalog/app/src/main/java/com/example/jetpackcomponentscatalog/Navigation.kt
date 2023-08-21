@@ -71,7 +71,7 @@ fun Screen4(navController: NavHostController, age: Int) {
                 .clickable { navController.navigate(Routes.Pantalla5.route) })
     }
 }
- 
+
 @Composable
 fun Screen5(navController: NavHostController, name: String?) {
     Box(
