@@ -7,5 +7,5 @@ import retrofit2.http.GET
 //Se encarga de tener los endpoints de la API
 interface LoginClient {
     @GET("/v3/f78c9d33-28b1-4f81-9cf1-6d6ff78fa014")
-    suspend fun doLogin(user:String, password:String):Response<LoginResponse>
+    suspend fun doLogin():Response<LoginResponse>
 }
